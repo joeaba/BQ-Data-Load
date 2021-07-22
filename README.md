@@ -11,7 +11,7 @@ _Basically, this script loads historical data related to solana owned accounts i
 **Prerequisites:**
 1. A `Schema File` in `.json` format to be passed it to the BigQuery Table
 2. A `Source File` to read data from, in the `.json` format
-3. A `Service Account` with Required Permissions
+3. A `Service Account` with Required Permissions and the `key` file related to it
 
 ## 1. Fetching the list of historical transaction signatures for each account
 
@@ -52,3 +52,45 @@ Steps:
 3. Install the **`solana-ledger-tool`** executable and set it in **`PATH`**
 
 Then Run the script using **`python3 [SCRIPT_FILENAME.PY]`**
+
+## Steps to setup the gcloud credentials:
+
+Steps:
+1.(a). Need to create a service account with necessary permissions and then create and save a key file of it
+```bash
+gcloud iam service-accounts create SERVICE_ACCOUNT_ID \
+    --description="DESCRIPTION" \
+    --display-name="DISPLAY_NAME"
+````
+
+(b). Optional: To grant your service account an IAM role on your project
+
+```bash
+gcloud projects add-iam-policy-binding PROJECT_ID \
+    --member="serviceAccount:SERVICE_ACCOUNT_ID@PROJECT_ID.iam.gserviceaccount.com" \
+    --role="ROLE_NAME"
+```
+
+(c). Optional: To allow users to impersonate the service account,
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding \
+    SERVICE_ACCOUNT_ID@PROJECT_ID.iam.gserviceaccount.com \
+    --member="user:USER_EMAIL" \
+    --role="roles/iam.serviceAccountUser"
+```
+(d). To Create a new key file
+```bash
+gcloud iam service-accounts keys create KEY_FILE \ 
+--iam-account=SERVICE_ACCOUNT_NAME@PROJECT_ID.iam.gserviceaccount.com
+```
+
+Output: A Service account is created and its key file is now downloaded to your machine.
+
+2. To setup environment variable and authorising the service account, have to pass the `location` of `.json` file that contains the key credentials inside the script
+
+```bash
+$ import os
+$ os.environ['GOOGLE_APPLICATION_CREDENTIALS']='/xxx/xxx/xxx.json'
+$ os.system('gcloud auth activate-service-account xxxxx@xxxxx.iam.gserviceaccount.com --key-file=/xxx/xxx/xxx.json')
+``` 
