@@ -1,8 +1,8 @@
 import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']='/root/gcpcmdlineuser.json'
-os.system('gcloud auth activate-service-account gcpcmdlineuser@mainnet-beta.iam.gserviceaccount.com --key-file=/root/gcpcmdlineuser.json')
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']='/xxxx/xxxxx.json'
+os.system('gcloud auth activate-service-account xxxxxx@xxxxxxx.iam.gserviceaccount.com --key-file=/xxxx/xxxx/xxxxx.json')
 
-signatures = ['3itU5ME8L6FDqtMiRoUiT1F7PwbkTtHBbW51YWD5jtjm']
+signatures = ['xxxxxxxxxxxxx','xxxxxxxxxxxx','xxxxxxxxxxxxx']
 for element in signatures:
     fhand4 = os.popen('./solana-ledger-tool bigtable transaction-history -l . '+element)
     output1 = fhand4.readlines()
@@ -20,14 +20,14 @@ for element in signatures:
         #Writing to the "signature details" file
         for detail_ in output2:
             fhand6.write(detail_)
-os.system('gcloud auth activate-service-account gcpcmdlineuser@mainnet-beta.iam.gserviceaccount.com --key-file=/root/gcpcmdlineuser.json')
+os.system('gcloud auth activate-service-account xxxxxx@xxxxxxx.iam.gserviceaccount.com --key-file=/xxxx/xxxxx/xxxxxx.json')
 fhand7 = open('signature_details.json')
 output3 = fhand7.readlines()
 fhandle = open('single_signature_detail.json','w')
 
 for details_ in output3:
     fhandle.write(details_)
-    os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON bigtable.main /home/sol/.local/share/solana/install/releases/stable-57b69b58041edf922b0615f03a467fc6df28748a/solana-release/bin/single_signature_detail.json /root/bq_load.json')
+    os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON xxxxxxx.xxxx /xxxx/xxxx/xxxx/xxxx/xxxx.json /xxxx.json')
 
 
 fhand3.close()
