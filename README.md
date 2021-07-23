@@ -53,10 +53,11 @@ Steps:
 
 Then Run the script using **`python3 [SCRIPT_FILENAME.PY]`**
 
-## Steps to setup the gcloud credentials:
+## Steps followed to get the scripting file to run: 
 
-Steps:
-1.(a). Need to create a service account with necessary permissions and then create and save a key file of it
+1. Setup the gcloud credentials:
+
+(a). Need to create a service account with necessary permissions and then create and save a key file of it
 ```bash
 gcloud iam service-accounts create SERVICE_ACCOUNT_ID \
     --description="DESCRIPTION" \
@@ -87,7 +88,28 @@ gcloud iam service-accounts keys create KEY_FILE \
 
 Output: A Service account is created and its key file is now downloaded to your machine.
 
-2. To setup environment variable and authorising the service account, have to pass the `location` of `.json` file that contains the key credentials inside the script
+2. To setup PATH for gcloud, solana-ledger-tool
+
+```bash
+export $PATH=PATH:/[LOCATION_OF_EXE_FILE]
+```
+Example:
+If for solana-ledger-tool the location is **`/home/xxxxxx/.local/xxx/solana-release/xxx/xxlxxexx/release-xxxxxxx/xxxx/xxxxx/bin/solana-ledger-tool`** then the path will be
+```bash
+export $PATH=PATH:/home/xxxxxx/.local/xxx/solana-release/xxx/xxlxxexx/release-xxxxxxx/xxxx/xxxxx/bin
+```
+If for solana-ledger-tool the location is **`/home/xxxxxx/.local/xxx/xxx/gcloud-sdk/xxx/xxxx/xxxx/xxx/bin/gcloud`**
+```bash
+export $PATH=PATH:/home/xxxxxx/.local/xxx/gcloud-sdk/xxx/xxxx/xxxx/xxx/bin
+```
+Note:
+To find path for a .exe use `find / -iname [NAME_OF_EXE]`
+
+Example:
+
+`find / -iname solana-ledger-tool`
+
+3. To setup environment variable and authorising the service account, have to pass the `location` of `.json` file that contains the key credentials inside the script file
 
 ```bash
 $ import os
