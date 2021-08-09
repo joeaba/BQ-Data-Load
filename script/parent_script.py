@@ -103,7 +103,7 @@ for x in OUTPUT:
 
         #importing data from another script
             copy_new_scripting2.default_cred()
-            fhandle3 = os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON bigtable.main_py '+output11+'/single_sig.json '+ output11 +'/bq_load.json')
+            fhandle3 = os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON bigtable.main_py '+output11+'/single_sig.json '+ output11 +'/bq_load1.json')
             time.sleep(7)
             fhandle3.close()
     print("Now, loading the main_uuid")
