@@ -9,9 +9,11 @@ _Basically, this script loads historical data related to solana owned accounts i
 
 
 **Prerequisites:**
-1. A `Schema File` in `.json` format to be passed it to the BigQuery Table
-2. A `Source File` to read data from, in the `.json` format
-3. A `Service Account` with Required Permissions and the `key` file related to it
+1. A `Schema File` named as `bq_load` in `.json` format to be passed it to the BigQuery Table
+2. A `Source File` named as `Acc_to_check` to read Accounts to be checked, in the `.txt` format
+3. A `Service Account` with Required Permissions (i.e., BigTable Read, BigQuery Write) and its `Credentials` key file
+4. The `Script File` named as `Main_Script.py`, `Setup_Credential.py`, `Helper_Script.py` at one place
+5. Setting the `Configurations` to configure profile
 
 ## 1. Fetching the list of historical transaction signatures for each account
 
@@ -50,6 +52,7 @@ Steps:
 1. Install the **`gcloud`** executable and set it in **`PATH`**
 2. Install the **`python 3.x`** and set it in **`PATH`**
 3. Install the **`solana-ledger-tool`** executable and set it in **`PATH`**
+4. Setting the **`Configurations`** using the set of commands
 
 Then Run the script using **`python3 [SCRIPT_FILENAME.PY]`**
 
@@ -91,16 +94,16 @@ Output: A Service account is created and its key file is now downloaded to your 
 2. To setup PATH for gcloud, solana-ledger-tool
 
 ```bash
-export $PATH=PATH:/[LOCATION_OF_EXE_FILE]
+export $PATH=PATH:/[LOCATION_OF_APPLICATIONS-EXE_FILE]
 ```
 Example:
-If for solana-ledger-tool the location is **`/home/xxxxxx/.local/xxx/solana-release/xxx/xxlxxexx/release-xxxxxxx/xxxx/xxxxx/bin/solana-ledger-tool`** then the path will be
+If for solana-ledger-tool the location is **`/home/[USER]/.local/share/solana/install/release/xxx/xxlxxexx/solana-release/bin/solana-ledger-tool`** then the path will be
 ```bash
-export $PATH=PATH:/home/xxxxxx/.local/xxx/solana-release/xxx/xxlxxexx/release-xxxxxxx/xxxx/xxxxx/bin
+export $PATH=PATH:/home/[USER]/.local/share/solana/install/release/xxx/xxlxxexx/solana-release/bin
 ```
-If for solana-ledger-tool the location is **`/home/xxxxxx/.local/xxx/xxx/gcloud-sdk/xxx/xxxx/xxxx/xxx/bin/gcloud`**
+If for solana-ledger-tool the location is **`/home/[USER]/.local/share/solana/install/releases/xxxxx/solana-release/bin/google-cloud-sdk/bin/gcloud`**
 ```bash
-export $PATH=PATH:/home/xxxxxx/.local/xxx/gcloud-sdk/xxx/xxxx/xxxx/xxx/bin
+export $PATH=PATH:/home/[USER]/.local/share/solana/install/releases/xxxxx/solana-release/bin/google-cloud-sdk/bin
 ```
 Note:
 To find path for a .exe use `find / -iname [NAME_OF_EXE]`
@@ -109,10 +112,31 @@ Example:
 
 `find / -iname solana-ledger-tool`
 
-3. To setup environment variable and authorising the service account, have to pass the `location` of `.json` file that contains the key credentials inside the script file
+3. For setting the `Configurations`, run command as-
+```bash
+gcloud config configurations activate default
+gcloud config configurations set project [PROJECT-NAME]
+gcloud config configurations set account [SERVICE-ACCOUNT-ID]
+```
+```bash
+gcloud config configurations create mainnet-config
+gcloud config configurations set project [PROJECT-NAME]
+gcloud config configurations set account [SERVICE-ACCOUNT-ID]
+```
+Note:
+If running the command `gcloud config configurations activate default` shows any error then probably it's because the **`default`** configuration is not listed inside the set of configurations in the machine so, first we need to create the `default` named configuration by running the command
+```bash
+gcloud config configurations create default
+```
+Now, we can run all the commands listed above, after this
+
+4. Use the parameters like key file name and the service-account-emailid used to create that key, and replace the corresponding reference inside the file named as copy_new_scripting2.py.
+
+Example:
 
 ```bash
-$ import os
-$ os.environ['GOOGLE_APPLICATION_CREDENTIALS']='/xxx/xxx/xxx.json'
-$ os.system('gcloud auth activate-service-account xxxxx@xxxxx.iam.gserviceaccount.com --key-file=/xxx/xxx/xxx.json')
-``` 
+cred = str(output11) + '/[KEY-FILE-NAME.json]'
+```
+```bash
+gcloud auth activate-service-account [EMAILID-OF-SERVICE-ACCOUNT]
+```
