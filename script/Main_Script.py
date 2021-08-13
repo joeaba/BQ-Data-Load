@@ -1,7 +1,7 @@
 import os 
 import time
 import datetime
-import Setup_Credential.py
+import Setup_Credential
 import Helper_Script
 
 print('Enter the account signature that you want to check')
