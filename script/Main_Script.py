@@ -1,8 +1,8 @@
 import os 
 import time
 import datetime
-import copy_new_scripting2
-import copy
+import Setup-Credential
+import Helper-Script
 
 print('Enter the account signature that you want to check')
 fhand15 = open('Acc_to_check.txt')
@@ -14,7 +14,7 @@ if os.path.exists('list_of_sig.txt'):
     print('removed the list_of_sig.txt')
 
 for x in OUTPUT:
-    copy_new_scripting2.mainnet_cred()
+    Setup-Credential.mainnet_cred()
     x = x.strip('\n')
 
     if not(os.path.exists('last transac.txt')):
@@ -122,7 +122,7 @@ for x in OUTPUT:
             fhandle1.close()
 
         #importing data from another script
-            copy_new_scripting2.default_cred()
+            Setup-Credential.default_cred()
             ###print("Now loading the main__py")
             fhand1 = os.popen('pwd')
             output10 = fhand1.readlines()
@@ -132,7 +132,7 @@ for x in OUTPUT:
             time.sleep(7)
             fhandle3.close()
     ###print("Now, loading the main_uuid")
-copy.make_copy()
+Helper-Script.make_copy()
 fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:bigtable.main_uuid \--append_table \--use_legacy_sql=false "SELECT \'GENERATE_UUID()\' AS uuid, * FROM bigtable.main_py"')
 time.sleep(30)
 fhandle_4.close()
