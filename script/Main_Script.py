@@ -14,7 +14,7 @@ if os.path.exists('list_of_sig.txt'):
     print('removed the list_of_sig.txt')
 
 for x in OUTPUT:
-    Setup-Credential.mainnet_cred()
+    Setup_Credential.mainnet_cred()
     x = x.strip('\n')
 
     if not(os.path.exists('last transac.txt')):
