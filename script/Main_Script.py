@@ -1,8 +1,8 @@
 import os 
 import time
 import datetime
-import Setup-Credential
-import Helper-Script
+import Setup_Credential.py
+import Helper_Script
 
 print('Enter the account signature that you want to check')
 fhand15 = open('Acc_to_check.txt')
@@ -122,7 +122,7 @@ for x in OUTPUT:
             fhandle1.close()
 
         #importing data from another script
-            Setup-Credential.default_cred()
+            Setup_Credential.default_cred()
             ###print("Now loading the main__py")
             fhand1 = os.popen('pwd')
             output10 = fhand1.readlines()
@@ -132,7 +132,7 @@ for x in OUTPUT:
             time.sleep(7)
             fhandle3.close()
     ###print("Now, loading the main_uuid")
-Helper-Script.make_copy()
+Helper_Script.make_copy()
 fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:bigtable.main_uuid \--append_table \--use_legacy_sql=false "SELECT \'GENERATE_UUID()\' AS uuid, * FROM bigtable.main_py"')
 time.sleep(30)
 fhandle_4.close()
