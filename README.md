@@ -130,7 +130,7 @@ gcloud config configurations create default
 ```
 Now, we can run all the commands listed above, after this
 
-4. Use the parameters like key file name and the service-account-emailid used to create that key, and replace the corresponding reference inside the file named as copy_new_scripting2.py.
+4. Use the parameters like key file name and the service-account-emailid used to create that key, and replace the corresponding reference inside the file named as Setup_Credential.py.
 
 Example:
 
