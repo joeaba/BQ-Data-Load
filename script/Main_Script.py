@@ -2,8 +2,8 @@ import os
 import re 
 import time
 import datetime
-import copy_new_scripting2
-import copy
+import Setup_Credential
+import Helper_Script
 
 fhand15 = open('Acc_to_check.txt')
 OUTPUT = fhand15.readlines()
@@ -12,7 +12,7 @@ if os.path.exists('list_of_sig.txt'):
     os.remove('list_of_sig.txt')
 
 for x in OUTPUT:
-    copy_new_scripting2.mainnet_cred()
+    Setup_Credential.mainnet_cred()
     x = x.strip('\n')
     if not(os.path.exists('last transac.txt')):
         fhand5 = open('last transac.txt','a')
@@ -109,7 +109,7 @@ for x in OUTPUT:
             fhandle1.write(z)
             fhandle1.close()
             
-            copy_new_scripting2.default_cred()
+            Setup_Credential.default_cred()
             fhand1 = os.popen('pwd')
             output10 = fhand1.readlines()
             fhand1.close()
@@ -117,7 +117,7 @@ for x in OUTPUT:
             fhandle3 = os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON bigtable.main_py ./single_sig.json ./bq_load.json')
             time.sleep(7)
             fhandle3.close()
-copy.make_copy()
+Helper_Script.make_copy()
 fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:bigtable.main_uuid \--append_table \--use_legacy_sql=false "SELECT \'GENERATE_UUID()\' AS uuid, * FROM bigtable.main_py"')
 time.sleep(30)
 fhandle_4.close()
@@ -133,7 +133,7 @@ fhandle_4.close()
 
 os.system('./write-all-stake-accounts.sh &')
 time.sleep(10)
-copy_new_scripting2.default_cred()
+Setup_Credential.default_cred()
 with os.popen('pwd') as fhand1:
     output11 = fhand1.readline()
     output11 = output11[0].strip('\n')
