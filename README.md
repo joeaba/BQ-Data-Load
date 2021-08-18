@@ -13,7 +13,6 @@ _Basically, this script loads historical data related to solana owned accounts i
 2. A `Source File` named as `Acc_to_check` to read Accounts to be checked, in the `.txt` format
 3. A `Service Account` with Required Permissions (i.e., BigTable Read, BigQuery Write) and its `Credentials` key file
 4. The `Script File` named as `Main_Script.py`, `Setup_Credential.py`, `Helper_Script.py` at one place
-5. Setting the `Configurations` to configure profile
 
 ## 1. Fetching the list of historical transaction signatures for each account
 
@@ -52,7 +51,6 @@ Steps:
 1. Install the **`gcloud`** executable and set it in **`PATH`**
 2. Install the **`python 3.x`** and set it in **`PATH`**
 3. Install the **`solana-ledger-tool`** executable and set it in **`PATH`**
-4. Setting the **`Configurations`** using the set of commands
 
 Then Run the script using **`python3 [SCRIPT_FILENAME.PY]`**
 
@@ -60,7 +58,7 @@ Then Run the script using **`python3 [SCRIPT_FILENAME.PY]`**
 
 1. Setup the gcloud credentials:
 
-(a). Need to create a service account with necessary permissions and then create and save a key file of it
+(a). Need to create a service account with necessary permissions (i.e., BigTable Read, BigQuery Write) and then create and save a key file of it
 ```bash
 gcloud iam service-accounts create SERVICE_ACCOUNT_ID \
     --description="DESCRIPTION" \
@@ -112,25 +110,7 @@ Example:
 
 `find / -iname solana-ledger-tool`
 
-3. For setting the `Configurations`, run command as-
-```bash
-gcloud config configurations activate default
-gcloud config configurations set project [PROJECT-NAME]
-gcloud config configurations set account [SERVICE-ACCOUNT-ID]
-```
-```bash
-gcloud config configurations create mainnet-config
-gcloud config configurations set project [PROJECT-NAME]
-gcloud config configurations set account [SERVICE-ACCOUNT-ID]
-```
-Note:
-If running the command `gcloud config configurations activate default` shows any error then probably it's because the **`default`** configuration is not listed inside the set of configurations in the machine so, first we need to create the `default` named configuration by running the command
-```bash
-gcloud config configurations create default
-```
-Now, we can run all the commands listed above, after this
-
-4. Use the parameters like key file name and the service-account-emailid used to create that key, and replace the corresponding reference inside the file named as Setup_Credential.py.
+3. Use the parameters like key's file-name and the service-account-emailid used to create that key, and replace the corresponding reference inside the file named as Setup_Credential.py.
 
 Example:
 
