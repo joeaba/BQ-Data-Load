@@ -1,14 +1,13 @@
-import os 
+import os
+import re 
 import time
 import datetime
 import Setup_Credential
 import Helper_Script
 
-print('Enter the account signature that you want to check')
 fhand15 = open('Acc_to_check.txt')
 OUTPUT = fhand15.readlines()
 fhand15.close()
-
 if os.path.exists('list_of_sig.txt'):
     os.remove('list_of_sig.txt')
     print('removed the list_of_sig.txt')
@@ -16,9 +15,7 @@ if os.path.exists('list_of_sig.txt'):
 for x in OUTPUT:
     Setup_Credential.mainnet_cred()
     x = x.strip('\n')
-
     if not(os.path.exists('last transac.txt')):
-        print('check4')
         fhand5 = open('last transac.txt','a')
         fhand5.close()
 
@@ -36,7 +33,6 @@ for x in OUTPUT:
             break
 
     if not accountFound:
-        print('check6')
         FHAND1 = os.popen('solana-ledger-tool bigtable transaction-history -l . '+x)
         output3 = FHAND1.readlines()
         FHAND1.close()
@@ -60,9 +56,11 @@ for x in OUTPUT:
             row = row.split(',')
             if row[0] == x:
                 last_txn_recorded = row[1]
+                print(row[1])
                 fhand4 = os.popen('solana-ledger-tool bigtable transaction-history --before ' + last_txn_recorded + ' -l . ' + x)
                 time.sleep(4)
                 output1 = fhand4.readlines()
+                print('output1 is ',output1)
                 fhand4.close()
                 if len(output1) > 0:
                     fhand3 = open('list_of_sig.txt','w')
@@ -81,7 +79,7 @@ for x in OUTPUT:
                         fin.close()
                         #open the input file in write mode
                         fin = open("last transac.txt", "w", newline='')
-                        #overrite the input file with the resulting data
+                    #overrite the input file with the resulting data
                         fin.write(data_strip)
                         fin.close()
                     break
@@ -95,7 +93,6 @@ for x in OUTPUT:
     fhand6 = open('sig_details.json','w')
     output2 = file1.readlines()
     file1.close()
-    print('output to be written on the bq for account',x ,'is ',output2)
     for sig2_ in output2:
         
         fhand5 = os.popen('curl -X POST -H "Content-Type: application/json" -d \'{"jsonrpc":"2.0", "id":1, "method":"getConfirmedTransaction","params":["'+sig2_.strip("\n")+'","json"]}\' https://api.mainnet-beta.solana.com')
@@ -123,7 +120,6 @@ for x in OUTPUT:
 
         #importing data from another script
             Setup_Credential.default_cred()
-            ###print("Now loading the main__py")
             fhand1 = os.popen('pwd')
             output10 = fhand1.readlines()
             fhand1.close()
@@ -143,12 +139,28 @@ fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:histor
 time.sleep(30)
 fhandle_4.close()
 ###print("Now, loading the transaction__forto")
+
 fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:history.transaction_frto \--append_table \--use_legacy_sql=false "SELECT blocktime, slot, hst.signature AS signature, hst.account AS account, CASE WHEN amount < 0 THEN hst.account ELSE neg.account END AS account_from, CASE WHEN amount > 0 THEN hst.account ELSE pos.account END AS account_to,amount FROM history.transaction_main hst LEFT JOIN (SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY signature ORDER BY amount DESC) AS rank, signature, account FROM history.transaction_main) WHERE rank = 1) pos ON pos.signature = hst.signature LEFT JOIN ( SELECT * FROM ( SELECT ROW_NUMBER() OVER (PARTITION BY signature ORDER BY amount ASC) AS rank, signature,account FROM history.transaction_main) WHERE rank = 1) neg ON neg.signature = hst.signature"')
 time.sleep(30)
 fhandle_4.close()
 ###print("Now, loading the history")
-fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:history.history \--use_legacy_sql=false "SELECT DATE(TIMESTAMP_SECONDS(blocktime)) AS datestamp, TIMESTAMP_SECONDS(blocktime) AS timestamp, EXTRACT(YEAR FROM TIMESTAMP_SECONDS(blocktime)) AS year_number, EXTRACT(MONTH FROM TIMESTAMP_SECONDS(blocktime)) AS month_number, hst.slot AS slot, hst.signature AS signature,hst.account AS account, CASE WHEN lck.date_lockup IS NOT NULL THEN CAST(lck.date_lockup AS STRING) WHEN lck.date_lockup IS NULL THEN \'None\' ELSE \'Unknown\' END AS date_lockup, account_from, account_to, IFNULL(amount,0) AS amount FROM (SELECT \'parameter\' AS join_parameter,blocktime,slot, signature, account, account_from,account_to, amount FROM history.transaction_frto) hst LEFT JOIN ( SELECT account, MAX(date_lockup) AS date_lockup FROM bigtable.lockup WHERE date_lockup IS NOT NULL GROUP BY 1 ) lck ON lck.account = hst.account_to"')
-time.sleep(3)
-fhandle_4.close()
-file1.close()
 
+os.system('./write-all-stake-accounts.sh &')
+time.sleep(10)
+Setup_Credential.default_cred()
+with os.popen('pwd') as fhand1:
+    output11 = fhand1.readline()
+    output11 = output11[0].strip('\n')
+    with os.popen('ls') as fhandle3:
+        output12 = fhandle3.readlines()
+        for index,ip in enumerate(output12):
+            output12[index] = output12[index].strip('\n')
+            output13 = re.search('^stake_accounts-.*csv$',output12[index])
+            if output13:
+                output15 = ip
+                
+fhandle_4 = os.popen ('bq load --autodetect --source_format=CSV bigtable.lockup ./'+ output15)
+time.sleep(15)
+fhandle_4.close()
+os.system(' bq query \--destination_table principal-lane-200702:bigtable.history \--use_legacy_sql=false "SELECT DATE(TIMESTAMP_SECONDS(blocktime)) AS datestamp, TIMESTAMP_SECONDS(blocktime) AS timestamp, EXTRACT(YEAR FROM TIMESTAMP_SECONDS(blocktime)) AS year_number, EXTRACT(MONTH FROM TIMESTAMP_SECONDS(blocktime)) AS month_number, hst.slot AS slot, hst.signature AS signature,hst.account AS account, CASE WHEN lck.date_lockup IS NOT NULL THEN CAST(lck.date_lockup AS STRING) WHEN lck.date_lockup IS NULL THEN \'None\' ELSE \'Unknown\' END AS date_lockup, account_from, account_to, IFNULL(amount,0) AS amount FROM (SELECT \'parameter\' AS join_parameter, blocktime, slot, signature, account, account_from,account_to, amount FROM history.transaction_frto) hst LEFT JOIN (SELECT account_address AS account, MAX(lockup_timestamp) AS date_lockup FROM bigtable.lockup WHERE lockup_timestamp IS NOT NULL GROUP BY 1 ) lck ON lck.account = hst.account_to LIMIT 5"')
+time.sleep(40)
