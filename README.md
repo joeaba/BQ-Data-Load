@@ -120,3 +120,8 @@ cred = str(output11) + '/[KEY-FILE-NAME.json]'
 ```bash
 gcloud auth activate-service-account [EMAILID-OF-SERVICE-ACCOUNT]
 ```
+
+4. Change the permissions of the file named as `write-all-stake-accounts.sh` by running the command 
+```bash
+chmod +x write-all-stake-accounts.sh'
+```
