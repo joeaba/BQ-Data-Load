@@ -3,7 +3,7 @@ import re
 import time
 import datetime
 import Setup_Credential
-import copy
+import Helper_Script
 fhand15 = open('Acc_to_check.txt')
 OUTPUT = fhand15.readlines()
 fhand15.close()
@@ -114,7 +114,7 @@ for x in OUTPUT:
             fhandle3 = os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON bigtable.main_py ./single_sig.json ./bq_load.json')
             time.sleep(7)
             fhandle3.close()
-copy.make_copy()
+Helper_Script.make_copy()
 fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:bigtable.main_uuid \--append_table \--use_legacy_sql=false "SELECT \'GENERATE_UUID()\' AS uuid, * FROM bigtable.main_py"')
 time.sleep(30)
 fhandle_4.close()
@@ -146,4 +146,4 @@ time.sleep(15)
 fhandle_4.close()
 print('query is starting')
 os.system(' bq query \--destination_table principal-lane-200702:bigtable.history \--use_legacy_sql=false "SELECT DATE(TIMESTAMP_SECONDS(blocktime)) AS datestamp, TIMESTAMP_SECONDS(blocktime) AS timestamp, EXTRACT(YEAR FROM TIMESTAMP_SECONDS(blocktime)) AS year_number, EXTRACT(MONTH FROM TIMESTAMP_SECONDS(blocktime)) AS month_number, hst.slot AS slot, hst.signature AS signature,hst.account AS account, CASE WHEN lck.date_lockup IS NOT NULL THEN CAST(lck.date_lockup AS STRING) WHEN lck.date_lockup IS NULL THEN \'None\' ELSE \'Unknown\' END AS date_lockup, account_from, account_to, IFNULL(amount,0) AS amount FROM (SELECT \'parameter\' AS join_parameter, blocktime, slot, signature, account, account_from,account_to, amount FROM history.transaction_frto) hst LEFT JOIN (SELECT account_address AS account, MAX(lockup_timestamp) AS date_lockup FROM bigtable.lockup WHERE lockup_timestamp IS NOT NULL GROUP BY 1 ) lck ON lck.account = hst.account_to"')
-time.sleep(40)
+time.sleep(80)
