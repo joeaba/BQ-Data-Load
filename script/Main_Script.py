@@ -127,19 +127,44 @@ fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:histor
 time.sleep(30)
 fhandle_4.close()
 
+
+os.system('chmod +x write-all-stake-accounts.sh')
+with os.popen('ls | sort') as fhandle3:
+    output12 = fhandle3.readlines()
+    for index,ip in enumerate(output12):
+        output12[index] = output12[index].strip('\n')
+        print('output12[index] is: ',output12[index])
+        output13 = re.search('^stake_accounts-.*csv$',output12[index])
+        if output13:
+            os.system('rm '+ip)
+
+os.system('rm stake_accounts-\b[0-9]{4}\b-\b[0-9]{2}-\b[0-9]{2}[-._]([01]?\d|2[0-3]):([0-5]?\d):([0-5]?\d).csv')
 os.system('./write-all-stake-accounts.sh &')
 time.sleep(10)
 Setup_Credential.default_cred()
-with os.popen('pwd') as fhand1:
-    output11 = fhand1.readline()
-    output11 = output11[0].strip('\n')
-    with os.popen('ls') as fhandle3:
-        output12 = fhandle3.readlines()
-        for index,ip in enumerate(output12):
-            output12[index] = output12[index].strip('\n')
-            output13 = re.search('^stake_accounts-.*csv$',output12[index])
-            if output13:
-                output15 = ip
+with os.popen('ls | sort') as fhandle3:
+    output12 = fhandle3.readlines()
+    for index,ip in enumerate(output12):
+        output12[index] = output12[index].strip('\n')
+        print('output12[index] is: ',output12[index])
+        output13 = re.search('^stake_accounts-.*csv$',output12[index])
+        if output13:
+            output15 = output12[index]
+
+
+# os.system('./write-all-stake-accounts.sh &')
+# time.sleep(10)
+# Setup_Credential.default_cred()
+# with os.popen('pwd') as fhand1:
+#     output11 = fhand1.readline()
+#     output11 = output11[0].strip('\n')
+#     with os.popen('ls') as fhandle3:
+#         output12 = fhandle3.readlines()
+#         for index,ip in enumerate(output12):
+#             output12[index] = output12[index].strip('\n')
+#             output13 = re.search('^stake_accounts-.*csv$',output12[index])
+#             if output13:
+#                 output15 = ip
 
 fhandle_4 = os.popen ('bq load --autodetect --source_format=CSV bigtable.lockup ./'+ output15)
 time.sleep(15)
