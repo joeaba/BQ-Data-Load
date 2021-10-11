@@ -31,3 +31,4 @@ def mainnet_cred():
     os.system('gcloud config set account anmol-bigtable-test@mainnet-beta.iam.gserviceaccount.com')
     cred = str(output11) + '/gcpcmdlineuser_mainnet.json'
     os.environ['GOOGLE_APPLICATION_CREDENTIALS']=cred
+    os.system('gcloud auth activate-service-account anmol-bigtable-test@mainnet-beta.iam.gserviceaccount.com --key-file='+ cred)
