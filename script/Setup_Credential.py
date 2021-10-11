@@ -7,10 +7,10 @@ fhand1.close()
 
 os.system('gcloud config configurations activate mainnet-config')
 os.system('gcloud config set project mainnet-beta')
-os.system('gcloud config set account anmol-bigtable-test@mainnet-beta.iam.gserviceaccount.com')
+os.system('gcloud config set account bt-read-bq-read@mainnet-beta.iam.gserviceaccount.com')
 cred = str(output11) + '/gcpcmdlineuser_mainnet.json'
 os.environ['GOOGLE_APPLICATION_CREDENTIALS']= cred
-os.system('gcloud auth activate-service-account anmol-bigtable-test@mainnet-beta.iam.gserviceaccount.com --key-file='+ cred)
+os.system('gcloud auth activate-service-account bt-read-bq-read@mainnet-beta.iam.gserviceaccount.com --key-file='+ cred)
 
 def default_cred():
     fhand1 = os.popen('pwd')
@@ -28,7 +28,7 @@ def mainnet_cred():
     output11 = output10[0].strip('\n')
     os.system('gcloud config configurations activate mainnet-config')
     os.system('gcloud config set project mainnet-beta')
-    os.system('gcloud config set account anmol-bigtable-test@mainnet-beta.iam.gserviceaccount.com')
+    os.system('gcloud config set account bt-read-bq-read@mainnet-beta.iam.gserviceaccount.com')
     cred = str(output11) + '/gcpcmdlineuser_mainnet.json'
     os.environ['GOOGLE_APPLICATION_CREDENTIALS']=cred
-    os.system('gcloud auth activate-service-account anmol-bigtable-test@mainnet-beta.iam.gserviceaccount.com --key-file='+ cred)
+    os.system('gcloud auth activate-service-account bt-read-bq-read@mainnet-beta.iam.gserviceaccount.com --key-file='+ cred)
