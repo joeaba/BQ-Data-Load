@@ -129,27 +129,49 @@ fhandle_4.close()
 
 
 os.system('chmod +x write-all-stake-accounts.sh')
-with os.popen('ls | sort') as fhandle3:
-    output12 = fhandle3.readlines()
-    for index,ip in enumerate(output12):
-        output12[index] = output12[index].strip('\n')
-        print('output12[index] is: ',output12[index])
-        output13 = re.search('^stake_accounts-.*csv$',output12[index])
-        if output13:
-            os.system('rm '+ip)
 
-os.system('rm stake_accounts-\b[0-9]{4}\b-\b[0-9]{2}-\b[0-9]{2}[-._]([01]?\d|2[0-3]):([0-5]?\d):([0-5]?\d).csv')
 os.system('./write-all-stake-accounts.sh &')
-time.sleep(10)
+time.sleep(17)
 Setup_Credential.default_cred()
+list1= []
 with os.popen('ls | sort') as fhandle3:
     output12 = fhandle3.readlines()
-    for index,ip in enumerate(output12):
-        output12[index] = output12[index].strip('\n')
-        print('output12[index] is: ',output12[index])
-        output13 = re.search('^stake_accounts-.*csv$',output12[index])
+    for output in output12:
+        list1.append(output)
+        #print(output)
+        #print (list1)
+    for index,ip in enumerate(list1,1):
+        value1 = "-" + str(index)
+        #print("list1 is : ",list1[int(value1)])
+        list1[int(value1)] = list1[int(value1)].strip('\n')
+        #print('list1[int(value1)] is: ',list1[int(value1)])
+        output13 = re.search('^stake_accounts-.*csv$',list1[int(value1)])
+        print("output13 is : ", output13)
         if output13:
-            output15 = output12[index]
+            output15 = list1[int(value1)]
+            break
+            
+# with os.popen('ls | sort') as fhandle3:
+#     output12 = fhandle3.readlines()
+#     for index,ip in enumerate(output12):
+#         output12[index] = output12[index].strip('\n')
+#         print('output12[index] is: ',output12[index])
+#         output13 = re.search('^stake_accounts-.*csv$',output12[index])
+#         if output13:
+#             os.system('rm '+ip)
+
+# os.system('rm stake_accounts-\b[0-9]{4}\b-\b[0-9]{2}-\b[0-9]{2}[-._]([01]?\d|2[0-3]):([0-5]?\d):([0-5]?\d).csv')
+# os.system('./write-all-stake-accounts.sh &')
+# time.sleep(10)
+# Setup_Credential.default_cred()
+# with os.popen('ls | sort') as fhandle3:
+#     output12 = fhandle3.readlines()
+#     for index,ip in enumerate(output12):
+#         output12[index] = output12[index].strip('\n')
+#         print('output12[index] is: ',output12[index])
+#         output13 = re.search('^stake_accounts-.*csv$',output12[index])
+#         if output13:
+#             output15 = output12[index]
 
 
 # os.system('./write-all-stake-accounts.sh &')
