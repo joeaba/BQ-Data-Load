@@ -2,7 +2,7 @@ import os
 import re 
 import time
 import datetime
-import Setup_Credential
+import setup_Credential
 import Helper_Script
 fhand15 = open('acc_to_check.txt')
 OUTPUT = fhand15.readlines()
@@ -11,7 +11,7 @@ if os.path.exists('list_of_sig.txt'):
     os.remove('list_of_sig.txt')
 
 for x in OUTPUT:
-    Setup_Credential.mainnet_cred()
+    setup_Credential.mainnet_cred()
     x = x.strip('\n')
     if not(os.path.exists('last transac.txt')):
         fhand5 = open('last transac.txt','a')
