@@ -3,7 +3,7 @@ import re
 import time
 import datetime
 import setup_credential
-import helper_Script
+import helper_script
 fhand15 = open('acc_to_check.txt')
 OUTPUT = fhand15.readlines()
 fhand15.close()
