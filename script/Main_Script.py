@@ -4,7 +4,7 @@ import time
 import datetime
 import Setup_Credential
 import Helper_Script
-fhand15 = open('Acc_to_check.txt')
+fhand15 = open('acc_to_check.txt')
 OUTPUT = fhand15.readlines()
 fhand15.close()
 if os.path.exists('list_of_sig.txt'):
