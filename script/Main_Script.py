@@ -3,7 +3,7 @@ import re
 import time
 import datetime
 import setup_Credential
-import Helper_Script
+import helper_Script
 fhand15 = open('acc_to_check.txt')
 OUTPUT = fhand15.readlines()
 fhand15.close()
@@ -114,7 +114,7 @@ for x in OUTPUT:
             fhandle3 = os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON bigtable.main_py ./single_sig.json ./bq_load.json')
             time.sleep(7)
             fhandle3.close()
-Helper_Script.make_copy()
+helper_Script.make_copy()
 fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:bigtable.main_uuid \--append_table \--use_legacy_sql=false "SELECT \'GENERATE_UUID()\' AS uuid, * FROM bigtable.main_py"')
 time.sleep(30)
 fhandle_4.close()
