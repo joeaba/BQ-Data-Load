@@ -2,7 +2,7 @@ import os
 import re 
 import time
 import datetime
-import setup_Credential
+import setup_credential
 import helper_Script
 fhand15 = open('acc_to_check.txt')
 OUTPUT = fhand15.readlines()
@@ -11,7 +11,7 @@ if os.path.exists('list_of_sig.txt'):
     os.remove('list_of_sig.txt')
 
 for x in OUTPUT:
-    setup_Credential.mainnet_cred()
+    setup_credential.mainnet_cred()
     x = x.strip('\n')
     if not(os.path.exists('last transac.txt')):
         fhand5 = open('last transac.txt','a')
@@ -106,7 +106,7 @@ for x in OUTPUT:
             fhandle1.write(z)
             fhandle1.close()
 
-            Setup_Credential.default_cred()
+            setup_credential.default_cred()
             fhand1 = os.popen('pwd')
             output10 = fhand1.readlines()
             fhand1.close()
@@ -114,7 +114,7 @@ for x in OUTPUT:
             fhandle3 = os.popen('bq load --autodetect --source_format=NEWLINE_DELIMITED_JSON bigtable.main_py ./single_sig.json ./bq_load.json')
             time.sleep(7)
             fhandle3.close()
-helper_Script.make_copy()
+helper_script.make_copy()
 fhandle_4 = os.popen('bq query \--destination_table principal-lane-200702:bigtable.main_uuid \--append_table \--use_legacy_sql=false "SELECT \'GENERATE_UUID()\' AS uuid, * FROM bigtable.main_py"')
 time.sleep(30)
 fhandle_4.close()
@@ -132,7 +132,7 @@ os.system('chmod +x write-all-stake-accounts.sh')
 
 os.system('./write-all-stake-accounts.sh &')
 time.sleep(17)
-Setup_Credential.default_cred()
+setup_credential.default_cred()
 list1= []
 with os.popen('ls | sort') as fhandle3:
     output12 = fhandle3.readlines()
@@ -163,7 +163,7 @@ with os.popen('ls | sort') as fhandle3:
 # os.system('rm stake_accounts-\b[0-9]{4}\b-\b[0-9]{2}-\b[0-9]{2}[-._]([01]?\d|2[0-3]):([0-5]?\d):([0-5]?\d).csv')
 # os.system('./write-all-stake-accounts.sh &')
 # time.sleep(10)
-# Setup_Credential.default_cred()
+# setup_credential.default_cred()
 # with os.popen('ls | sort') as fhandle3:
 #     output12 = fhandle3.readlines()
 #     for index,ip in enumerate(output12):
@@ -176,7 +176,7 @@ with os.popen('ls | sort') as fhandle3:
 
 # os.system('./write-all-stake-accounts.sh &')
 # time.sleep(10)
-# Setup_Credential.default_cred()
+# setup_credential.default_cred()
 # with os.popen('pwd') as fhand1:
 #     output11 = fhand1.readline()
 #     output11 = output11[0].strip('\n')
