@@ -13,11 +13,11 @@ if os.path.exists('list_of_sig.txt'):
 for x in OUTPUT:
     setup_credential.mainnet_cred()
     x = x.strip('\n')
-    if not(os.path.exists('last_transac.txt')):
-        fhand5 = open('last_transac.txt','a')
+    if not(os.path.exists("last_transac.txt")):
+        fhand5 = open("last_transac.txt",'a')
         fhand5.close()
 
-    fhand5 = open('last_transac.txt')
+    fhand5 = open("last_transac.txt")
     output2 = fhand5.readlines()
     fhand5.close()
 
@@ -45,7 +45,7 @@ for x in OUTPUT:
         fhand.close()
     else:
         print('The Account is Already existing in the last_transaction.txt file')
-        fhand5 = open('last_transac.txt')
+        fhand5 = open("last_transac.txt")
         output9 = fhand5.readlines()
         fhand5.close()
         for row in output9:
