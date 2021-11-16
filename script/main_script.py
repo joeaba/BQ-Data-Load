@@ -13,11 +13,11 @@ if os.path.exists('list_of_sig.txt'):
 for x in OUTPUT:
     setup_credential.mainnet_cred()
     x = x.strip('\n')
-    if not(os.path.exists('last transac.txt')):
-        fhand5 = open('last transac.txt','a')
+    if not(os.path.exists('last_transac.txt')):
+        fhand5 = open('last_transac.txt','a')
         fhand5.close()
 
-    fhand5 = open('last transac.txt')
+    fhand5 = open('last_transac.txt')
     output2 = fhand5.readlines()
     fhand5.close()
 
@@ -40,12 +40,12 @@ for x in OUTPUT:
         FHAND2.close()
 
         row = x + "," + detail_
-        fhand = open("last transac.txt",'a')
+        fhand = open("last_transac.txt",'a')
         fhand.write(row)
         fhand.close()
     else:
-        print('The Account is Already existing in the last transaction')
-        fhand5 = open('last transac.txt')
+        print('The Account is Already existing in the last_transaction.txt file')
+        fhand5 = open('last_transac.txt')
         output9 = fhand5.readlines()
         fhand5.close()
         for row in output9:
@@ -63,10 +63,10 @@ for x in OUTPUT:
                         fhand3.write(sig)
                     fhand3.close()
 
-                    fin = open("last transac.txt")
+                    fin = open("last_transac.txt")
                     data = fin.readlines()
                     fin.close()
-                    fin = open("last transac.txt", "w", newline='')
+                    fin = open("last_transac.txt", "w", newline='')
                     for data_strip in data:
                         data_strip = data_strip.replace(last_txn_recorded, output1[-1].strip('\n'))	
                         fin.write(data_strip)
